@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - E-Voting OSIS 2026</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+            margin: 0; 
+            padding: 0; 
+            text-align: center; 
+        }
+        header { 
+            background-color: #343a40; 
+            color: white; 
+            padding: 25px 20px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
+        p { margin: 10px 0 0; color: #ced4da; font-size: 16px; }
+        
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        
+        .results { 
+            display: flex; 
+            justify-content: center; 
+            gap: 40px; 
+            flex-wrap: wrap; 
+            margin-top: 30px; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15); 
+            padding: 30px 20px; 
+            width: 280px; 
+            border-top: 6px solid #343a40; 
+        }
+        .paslon-title { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #333; 
+        }
+        .vote-count { 
+            font-size: 60px; 
+            font-weight: 900; 
+            color: #004085; 
+            margin: 20px 0; 
+        }
+        .label-suara { color: #666; font-size: 16px; font-weight: bold; }
+        
+        .action-buttons { margin-top: 50px; display: flex; justify-content: center; gap: 15px; }
+        
+        .btn {
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-back { background-color: #004085; }
+        .btn-back:hover { background-color: #002752; }
+        
+        .btn-reset { background-color: #dc3545; }
+        .btn-reset:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DASHBOARD ADMIN - HASIL E-VOTING</h1>
+        <p>SMP NEGERI 17 KOTA SURAKARTA TAHUN 2026</p>
+    </header>
+
+    <div class="container">
+        <h3 style="color: #555; font-size: 24px;">Rekapitulasi Suara Sementara</h3>
+        
+        <div class="results">
+            <!-- Hasil Paslon 1 -->
+            <div class="card">
+                <div class="paslon-title">PASLON 01</div>
+                <div class="vote-count" id="hasil-paslon1">0</div>
+                <div class="label-suara">SUARA</div>
+            </div>
+
+            <!-- Hasil Paslon 2 -->
+            <div class="card">
+                <div class="paslon-title">PASLON 02</div>
+                <div class="vote-count" id="hasil-paslon2">0</div>
+                <div class="label-suara">SUARA</div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <!-- Ganti href="index.html" sesuai dengan nama file e-voting Anda -->
+            <a href="index.html" class="btn btn-back">⬅ Kembali ke Pemilihan</a>
+            <button class="btn btn-reset" onclick="resetVotes()">Hapus Semua Suara 🗑</button>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk memuat hasil dari LocalStorage
+        function loadResults() {
+            let votes1 = parseInt(localStorage.getItem('vote_paslon1')) || 0;
+            let votes2 = parseInt(localStorage.getItem('vote_paslon2')) || 0;
+
+            document.getElementById('hasil-paslon1').innerText = votes1;
+            document.getElementById('hasil-paslon2').innerText = votes2;
+        }
+
+        // Fungsi untuk mereset/menghapus data pemilihan
+        function resetVotes() {
+            let confirmReset = confirm("AWAS! Apakah Anda yakin ingin MENGHAPUS SEMUA DATA SUARA? Tindakan ini tidak bisa dibatalkan.");
+            
+            if (confirmReset) {
+                // Hapus data dari LocalStorage
+                localStorage.removeItem('vote_paslon1');
+                localStorage.removeItem('vote_paslon2');
+                
+                alert("Data suara berhasil di-reset kembali ke 0!");
+                loadResults(); // Update angka di layar jadi 0
+            }
+        }
+
+        // Jalankan fungsi loadResults saat halaman pertama kali dibuka
+        window.onload = loadResults;
+        
+        // Auto-refresh data setiap 2 detik
+        // Berguna jika admin membuka halaman ini di tab/layar lain pada komputer yang sama
+        setInterval(loadResults, 2000);
+    </script>
+</body>
+</html>
